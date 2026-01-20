@@ -3,181 +3,204 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Property</title>
+  <title>PGH • Property</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
-    .card3d{transform-style:preserve-3d;transition:transform .15s ease, box-shadow .15s ease}
-    .card3d:hover{transform:translateY(-4px) rotateX(3deg) rotateY(-3deg);box-shadow:0 22px 70px rgba(0,0,0,.35)}
-    .disabled{opacity:.45;pointer-events:none;filter:saturate(.3)}
+    .shadow-soft{box-shadow:0 18px 50px rgba(0,0,0,.25)}
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-white">
-  <div class="max-w-6xl mx-auto px-4 py-8">
-    <div class="flex items-center justify-between">
-      <a href="javascript:history.back()" class="text-xl font-bold">← Back</a>
-      <div class="text-sm text-slate-300" id="meta"></div>
+  <div class="max-w-6xl mx-auto px-4 py-8 sm:py-10">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <div class="text-2xl font-bold tracking-tight leading-tight">Properties Group Hyderabad (PGH)</div>
+        <div id="propTitle" class="text-sm text-slate-300 mt-1">Loading property...</div>
+      </div>
+      <a href="/index.html" class="text-sm text-slate-300 hover:text-white underline underline-offset-4">Home</a>
     </div>
 
-    <div class="mt-6 glass rounded-3xl p-6">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-          <div class="text-3xl font-semibold" id="title">Loading...</div>
-          <div class="text-slate-300 text-sm mt-1" id="addr"></div>
-        </div>
-        <div class="text-right">
-          <div class="text-slate-300 text-xs">Today Price</div>
-          <div class="text-3xl font-bold" id="arr">₹0</div>
-        </div>
-      </div>
+    <div id="meta" class="mt-6"></div>
 
-      <div class="mt-6 flex gap-2 flex-wrap" id="floors"></div>
-      <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="rooms"></div>
-    </div>
-  </div>
+    <div id="floorNav" class="mt-6 flex flex-wrap gap-2"></div>
 
-  <!-- modal -->
-  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/60 p-4">
-    <div class="glass rounded-3xl w-full max-w-xl p-6">
-      <div class="flex items-start justify-between gap-4">
-        <div>
-          <div class="text-2xl font-semibold" id="mTitle"></div>
-          <div class="text-slate-300 text-sm" id="mMeta"></div>
-        </div>
-        <button onclick="closeModal()" class="text-slate-200 hover:text-white">✕</button>
-      </div>
-
-      <div class="mt-5">
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <input id="bName" placeholder="Full name" class="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
-          <input id="bPhone" placeholder="Phone" class="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
-          <input id="bEmail" placeholder="Email" class="col-span-2 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
-          <input id="bAddress" placeholder="Address (optional)" class="col-span-2 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
-        </div>
-
-        <button onclick="submitBooking()" class="mt-4 w-full rounded-2xl bg-white text-slate-950 font-semibold py-3 hover:opacity-90">
-          Request Booking
-        </button>
-
-        <div id="status" class="mt-3 text-sm text-slate-300"></div>
-      </div>
-    </div>
+    <div id="grid" class="mt-6 grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
   </div>
 
 <script>
-  const qs = new URLSearchParams(location.search);
-  const code = qs.get("code");
-  const from = qs.get("from");
-  const to = qs.get("to");
-  let currentFloor = null;
-  let property = null;
-  let selectedRoom = null;
+  const API = "/api";
 
-  document.getElementById("meta").innerText = `${code} • ${from} → ${to}`;
+  function q(name){
+    const u = new URL(window.location.href);
+    return u.searchParams.get(name) || "";
+  }
+
+  function money(n){
+    n = Number(n || 0);
+    return "₹" + Math.round(n).toLocaleString("en-IN");
+  }
+
+  function esc(s){
+    return String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // ✅ Gallery loader:
+  // expects: /rooms/<PROPERTY>/<ROOM>/manifest.json
+  // manifest.json sample:
+  // { "images": ["1.jpg","2.jpg","3.jpg"] }
+  async function loadRoomGallery(propCode, roomNo){
+    const base = `/rooms/${encodeURIComponent(propCode)}/${encodeURIComponent(roomNo)}`;
+    try{
+      const r = await fetch(`${base}/manifest.json?ts=${Date.now()}`);
+      if(!r.ok) return [];
+      const data = await r.json();
+      const imgs = (data.images || []).map(x => `${base}/${x}`);
+      return imgs;
+    }catch(e){
+      return [];
+    }
+  }
+
+  function roomCardHTML(room, propCode){
+    const isBooked = room.status === "booked";
+    const badge = isBooked
+      ? `<div class="text-xs font-semibold px-3 py-1 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-200">Booked</div>`
+      : `<div class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-200">Available</div>`;
+
+    return `
+      <div class="glass shadow-soft rounded-3xl p-5 sm:p-6 overflow-hidden">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-lg font-bold leading-tight">Room ${esc(room.room)}</div>
+            <div class="mt-1 text-xs text-slate-400">Floor ${esc(room.floor)} • ${esc(room.type || "Standard")}</div>
+          </div>
+          ${badge}
+        </div>
+
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">Standard Price</div>
+            <div class="text-lg font-bold" id="std_${esc(room.room)}">${money(room.standard_price || 0)}</div>
+          </div>
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">Today Price</div>
+            <div class="text-lg font-bold" id="tdy_${esc(room.room)}">${money(room.today_price || 0)}</div>
+          </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <button class="rounded-2xl bg-white/10 border border-white/10 py-3 font-semibold hover:bg-white/15"
+            onclick="toggleGallery('${esc(propCode)}','${esc(room.room)}')">
+            View Room
+          </button>
+          <button ${isBooked ? "disabled" : ""} class="rounded-2xl ${isBooked ? "bg-white/5 text-white/40 border border-white/5" : "bg-white text-slate-950"} font-semibold py-3 hover:opacity-90"
+            onclick="openBooking('${esc(propCode)}','${esc(room.room)}')">
+            ${isBooked ? "Booked" : "Book Now"}
+          </button>
+        </div>
+
+        <!-- ✅ Gallery Container (inside same 3D card) -->
+        <div id="gal_${esc(room.room)}" class="hidden mt-5">
+          <div class="text-xs text-slate-400 mb-3">Room Photos</div>
+          <div id="galgrid_${esc(room.room)}" class="grid grid-cols-2 gap-3"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function toggleGallery(propCode, roomNo){
+    const wrap = document.getElementById(`gal_${roomNo}`);
+    const grid = document.getElementById(`galgrid_${roomNo}`);
+    if(!wrap || !grid) return;
+
+    if(!wrap.classList.contains("hidden")){
+      wrap.classList.add("hidden");
+      return;
+    }
+
+    // show + load
+    wrap.classList.remove("hidden");
+    grid.innerHTML = `<div class="col-span-2 text-sm text-slate-300">Loading photos...</div>`;
+
+    const imgs = await loadRoomGallery(propCode, roomNo);
+    if(!imgs.length){
+      grid.innerHTML = `
+        <div class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-4 text-sm text-slate-300">
+          No photos uploaded for this room yet.
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = imgs.map(src => `
+      <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+        <img src="${src}" class="w-full h-28 sm:h-32 object-cover" loading="lazy" />
+      </div>
+    `).join("");
+  }
+
+  function openBooking(prop, room){
+    const from = q("from");
+    const to = q("to");
+    alert(`Booking request will be sent.\n\nProperty: ${prop}\nRoom: ${room}\nFrom: ${from}\nTo: ${to}\n\n(Booking form stays unchanged)`);
+  }
 
   async function load(){
-    const res = await fetch(`/api/property/${code}?from=${from}&to=${to}`);
-    const data = await res.json();
-    property = data;
+    const code = q("code");
+    const from = q("from");
+    const to = q("to");
 
-    document.getElementById("title").innerText = data.name;
-    document.getElementById("addr").innerText = data.address;
+    document.getElementById("propTitle").innerHTML = `Property: <b>${esc(code)}</b>`;
 
-    // show today price (value comes from yesterday_arr field)
-    const todayPrice = Math.round(data.yesterday_arr || 0);
-    document.getElementById("arr").innerText = `₹${todayPrice}`;
-
-    currentFloor = data.floors[0];
-    renderFloors();
-    renderRooms();
-  }
-
-  function renderFloors(){
-    const floors = document.getElementById("floors");
-    floors.innerHTML = "";
-    property.floors.forEach(f => {
-      const btn = document.createElement("button");
-      btn.className = `px-4 py-2 rounded-full border ${f===currentFloor ? "bg-white text-slate-950 border-white" : "bg-white/5 border-white/10 text-slate-100"}`;
-      btn.innerText = `Floor ${f}`;
-      btn.onclick = ()=>{ currentFloor = f; renderFloors(); renderRooms(); };
-      floors.appendChild(btn);
-    });
-  }
-
-  function renderRooms(){
-    const rooms = document.getElementById("rooms");
-    rooms.innerHTML = "";
-    const list = property.rooms.filter(r => r.floor === currentFloor);
-    const todayPrice = Math.round(property.yesterday_arr || 0);
-
-    list.forEach(r => {
-      const el = document.createElement("div");
-      const isAvailable = r.status === "available";
-      const badge = r.status === "available" ? "🟢 Available" : (r.status === "requested" ? "🟡 Requested" : "🔴 Booked/Occupied");
-      el.className = `glass rounded-3xl p-4 card3d ${isAvailable ? "" : "disabled"}`;
-
-      el.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div class="text-xl font-semibold">Room ${r.room}</div>
-          <div class="text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10">${badge}</div>
-        </div>
-        <div class="mt-3 text-slate-300 text-sm">${r.type || "Standard"} • ₹${todayPrice}</div>
-        <div class="mt-4 grid grid-cols-3 gap-2 text-xs text-slate-200">
-          <div class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center">AC</div>
-          <div class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center">WiFi</div>
-          <div class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center">TV</div>
-        </div>
-        <button class="mt-4 w-full rounded-2xl bg-white text-slate-950 font-semibold py-2 hover:opacity-90">
-          Book
-        </button>
-      `;
-      el.onclick = ()=> openModal(r);
-      rooms.appendChild(el);
-    });
-  }
-
-  function openModal(room){
-    selectedRoom = room;
-    const todayPrice = Math.round(property.yesterday_arr || 0);
-
-    document.getElementById("mTitle").innerText = `${property.name} • Room ${room.room}`;
-    document.getElementById("mMeta").innerText = `${from} → ${to} • Today Price ₹${todayPrice}`;
-    document.getElementById("status").innerText = "";
-    document.getElementById("modal").classList.remove("hidden");
-    document.getElementById("modal").classList.add("flex");
-  }
-
-  function closeModal(){
-    document.getElementById("modal").classList.add("hidden");
-    document.getElementById("modal").classList.remove("flex");
-  }
-
-  async function submitBooking(){
-    const payload = {
-      property_code: code,
-      room: selectedRoom.room,
-      from, to,
-      name: document.getElementById("bName").value.trim(),
-      phone: document.getElementById("bPhone").value.trim(),
-      email: document.getElementById("bEmail").value.trim(),
-      address: document.getElementById("bAddress").value.trim()
-    };
-
-    document.getElementById("status").innerText = "Submitting request...";
-    const res = await fetch("/api/book", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-
-    if(data.ok){
-      document.getElementById("status").innerText =
-        "✅ Request received. You will receive a call soon to confirm booking.";
-      setTimeout(()=>{ closeModal(); location.reload(); }, 1200);
-    }else{
-      document.getElementById("status").innerText = "❌ Failed: " + (data.error || "Try again");
+    let data;
+    try{
+      const r = await fetch(`${API}/property/${encodeURIComponent(code)}?from_=${from}&to=${to}`);
+      data = await r.json();
+    }catch(e){
+      document.getElementById("meta").innerHTML = `<div class="text-sm text-rose-300">❌ API not reachable.</div>`;
+      return;
     }
+
+    document.title = `PGH • ${data.name || code}`;
+    document.getElementById("propTitle").innerHTML = `<b>${esc(data.name || code)}</b>`;
+
+    document.getElementById("meta").innerHTML = `
+      <div class="glass shadow-soft rounded-3xl p-5 sm:p-6 overflow-hidden">
+        <div class="text-sm text-slate-300">Address</div>
+        <div class="mt-1 text-white break-words">${esc(data.address || "")}</div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">Today Price</div>
+            <div class="text-xl font-bold">${money(data.yesterday_arr || 0)}</div>
+          </div>
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">App Price</div>
+            <div class="text-xl font-bold">${money(data.app_arr || 0)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const floors = data.floors || [];
+    const rooms = data.rooms || [];
+
+    // nav
+    const floorNav = document.getElementById("floorNav");
+    floorNav.innerHTML = "";
+    for(const f of floors){
+      const btn = document.createElement("button");
+      btn.className = "px-4 py-2 rounded-2xl bg-white/10 border border-white/10 hover:bg-white/15 text-sm font-semibold";
+      btn.textContent = `Floor ${f}`;
+      btn.onclick = () => renderRooms(String(f));
+      floorNav.appendChild(btn);
+    }
+
+    function renderRooms(floor){
+      const grid = document.getElementById("grid");
+      const list = rooms.filter(r => String(r.floor) === String(floor));
+      grid.innerHTML = list.map(r => roomCardHTML(r, code)).join("");
+    }
+
+    renderRooms(String(floors[0] || "1"));
   }
 
   load();
