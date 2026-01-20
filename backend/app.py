@@ -38,6 +38,8 @@ app.add_middleware(
 )
 
 # =========================================================
+# PROPERTIES
+# =========================================================
 PROPERTIES: Dict[str, Dict[str, Any]] = {
     "HYD2857": {"UIF":"eyJlbWFpbCI6Im1vaGRzdWFpZGFobWVkQGdtYWlsLmNvbSIsImFjY2Vzc190b2tlbiI6Im51QmI0XzNlREJPWjRaVGxLdlFsMXciLCJyb2xlIjoiT3duZXIiLCJpZCI6MjAzMzEzMjUyLCJwaG9uZSI6Ijk5ODUyODMzMDYiLCJjb3VudHJ5X2NvZGUiOiIrOTEiLCJkZXZpc2Vfcm9sZSI6Ik93bmVyX1BvcnRhbF9Vc2VyIiwicGhvbmVfdmVyaWZpZWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ1cGRhdGVkX2F0IjoiMTczMjI2MTE0MiIsImZlYXR1cmVzIjp7fSwic3RhdHVzX2NvZGUiOjEwMCwibWlsbGlzX2xlZnRfZm9yX3Bhc3N3b3JkX2V4cGlyeSI6OTQ5MTExOTU1NDQzLCJhZGRyZXNzSnNvbiI6e319","UUID":"NGY2ZGI1NjYtNzEyZS00MTI3LTljM2MtMmM5MDVjYjdkMWZk","QID":259690},
     "HYD2728": {"UIF":"eyJlbWFpbCI6ImNoZWYubml0aW5AZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoiZm11QjhxREVCQjJfbzRfSW1tQ0NqUSIsInJvbGUiOiJPd25lciIsImlkIjoyMDQ3MjI0OTMsInBob25lIjoiOTEwMDA5MjU4NiIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzIwNzkzNTg3IiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3JfcGFzc3dvcmRfZXhwaXJ5Ijo5MTY4ODQ3NzQ1MzQsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"NmYxMzY0NmUtNWM0ZC00ZWUyLWFkZWEtMDFkZTMyZmM3ZjRm","QID":245844},
@@ -45,19 +47,17 @@ PROPERTIES: Dict[str, Dict[str, Any]] = {
     "HYD3030": {"UIF":"eyJlbWFpbCI6InN2aG90ZWw5OTlAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoic2x5Y2Fta0pBbU9uZUt2SXlwOWVsUSIsInJvbGUiOiJPd25lciIsImlkIjoyMzU5NTMyNTAsInBob25lIjoiOTk4NTM0NzQ3NiIsImNvdW50cnlfY29kZSI6Iis5MSIsImZpcnN0X25hbWUiOiJHdWVzdCIsInNleCI6Ik1hbGUiLCJ0ZWFtIjoiTWFya2V0aW5nIiwiZGV2aXNlX3JvbGUiOiJPd25lcl9Qb3J0YWxfVXNlciIsInBob25lX3ZlcmlmaWVkIjp0cnVlLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwidXBkYXRlZF9hdCI6IjE3NTM4ODQzOTEiLCJmZWF0dXJlcyI6e30sInN0YXR1c19jb2RlIjoxMDAsIm1pbGxpc19sZWZ0X2Zvcl9wYXNzd29yZF9leHBpcnkiOjk0MDI5NDU3MjI0MywiYWRkcmVzc0pzb24iOnt9fQ%3D%3D","UUID":"ZjNjZmZkMWQtOTJiMS00ZjM3LWE1YWMtZGQ3NGExNGIwN2Q5","QID":304236},
     "HYD1170": {"UIF":"eyJlbWFpbCI6ImtsLmdyYW5kLmhvdGVsQGdtYWlsLmNvbSIsImFjY2Vzc190b2tlbiI6IlhiTVZVUllmVlNJQUhZSWlRMDRyV0EiLCJyb2xlIjoiT3duZXIiLCJpZCI6MjQ2NTU3NzU4LCJwaG9uZSI6IjkyNDgwMDM3MzgiLCJjb3VudHJ5X2NvZGUiOiIrOTEiLCJmaXJzdF9uYW1lIjoiQW5rZXNoIiwic2V4IjoiTWFsZSIsInRlYW0iOiJNYXJrZXRpbmciLCJkZXZpc2Vfcm9sZSI6Ik93bmVyX1BvcnRhbF9Vc2VyIiwicGhvbmVfdmVyaWZpZWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ1cGRhdGVkX2F0IjoiMTc2Mzk3ODgyMCIsImZlYXR1cmVzIjp7fSwic3RhdHVzX2NvZGUiOjEwMCwibWlsbGlzX2xlZnRfZm9yX3Bhc3N3b3JkX2V4cGlyeSI6OTQ0NjkyNTczODQ5LCJhZGRyZXNzSnNvbiI6e319","UUID":"YzRlZWNmMzUtMTllNS00YjVhLTg4YTgtOGIwNGI2NzlkNWQ0","QID":83460},
     "HYD1762": {"UIF":"eyJlbWFpbCI6ImtlZXJ0aGljaGFuZHJhOTJAeWFob28uY29tIiwiYWNjZXNzX3Rva2VuIjoibWNCYlEzUUhxZGtRSUYtWUU0X3d0dyIsInJvbGUiOiJPd25lciIsImlkIjoxMTA1NjkzOTUsInBob25lIjoiOTk1OTY2NjYwMiIsImNvdW50cnlfY29kZSI6Iis5MSIsImZpcnN0X25hbWUiOiJCYW5kYXJ1IiwibGFzdF9uYW1lIjoiVmVua2F0YXNhdHlha2VlcnRoaSIsImNpdHkiOiIiLCJzZXgiOiJNYWxlIiwidGVhbSI6Ik93bmVyIEVuZ2FnZW1lbnQiLCJkZXZpc2Vfcm9sZSI6Ik93bmVyX1BvcnRhbF9Vc2VyIiwicGhvbmVfdmVyaWZpZWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhZGRyZXNzIjoiIiwidXBkYXRlZF9hdCI6IjE3MDczOTk3NTIiLCJmZWF0dXJlcyI6e30sInN0YXR1c19jb2RlIjoxMDAsIm1pbGxpc19sZWZ0X2Zvcl9wYXNzd29yZF9leHBpcnkiOjk0NjkyMjA2NjUxOCwiYWRkcmVzc0pzb24iOnt9fQ%3D%3D","UUID":"ZjMwZmZlNTgtYTlkNi00NDEzLTlmM2UtY2E5MWI1NTU4ZWUw","QID":115451},
-    "HYD2984": {"UIF":"eyJlbWFpbCI6InByYXZlZW5hcHV0bHVyaTIwMDdAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoiZ3FFMVg3RFhDR0RaeEhfQWdMWVpydyIsInJvbGUiOiJPd25lciIsImlkIjoyMTk1ODcyMjQsInBob25lIjoiODcxMjI5NjIxMiIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzQzMjQ1Mjc0IiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3JfcGFzc3dvcmRfZXhwaXJ5Ijo5MjgzNTcxNDY5MDMsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"ZDY0ODFkMDgtYmVjZi00ZDU5LTgzZWItMmU1Y2U1NjMyMjEy","QID":299149},
-    "HYD495": {"UIF":"eyJlbWFpbCI6Im1hbm9oYXJqb3NoQGdtYWlsLmNvbSIsImFjY2Vzc190b2tlbiI6IjJQMFVURk9lRElKdzZHejA0WlJMTHciLCJyb2xlIjoiT3duZXIiLCJpZCI6NDc0Mjk5MSwicGhvbmUiOiI5OTg1OTk4NTg4IiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZmlyc3RfbmFtZSI6IlZhcmFwcmFzYWRwbXByYXRhcCIsImxhc3RfbmFtZSI6IjgwOTY5OTQ0MjQiLCJjaXR5IjoiIiwic2V4IjoiTWFsZSIsInRlYW0iOiJPd25lciBFbmdhZ2VtZW50IiwiZGV2aXNlX3JvbGUiOiJPd25lcl9Qb3J0YWxfVXNlciIsInBob25lX3ZlcmlmaWVkIjp0cnVlLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYWRkcmVzcyI6IiIsInVwZGF0ZWRfYXQiOiIxNzYxOTgzODg1IiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3JfcGFzc3dvcmRfZXhwaXJ5Ijo5NDYwNjAwMzI2MjgsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"YjAxMWE2MDgtMDc5Ni00OGZlLTliYjEtNDY0OWJkM2IzNzMx","QID":16711},
+    "HYD2984": {"UIF":"eyJlbWFpbCI6InByYXZlZW5hcHV0bHVyaTIwMDdAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoiZ3FFMVg3RFhDR0RaeEhfQWdMWVpydyIsInJvbGUiOiJPd25lciIsImlkIjoyMTk1ODcyMjQsInBob25lIjoiODcxMjI5NjIxMiIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzQzMjQ1Mjc0IiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3J_fcGFzc3dvcmRfZXhwaXJ5Ijo5MjgzNTcxNDY5MDMsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"ZDY0ODFkMDgtYmVjZi00ZDU5LTgzZWItMmU1Y2U1NjMyMjEy","QID":299149},
+    "HYD495": {"UIF":"eyJlbWFpbCI6Im1hbm9oYXJqb3NoQGdtYWlsLmNvbSIsImFjY2Vzc190b2tlbiI6IjJQMFVURk9lRElKdzZHejA0WlJMTHciLCJyb2xlIjoiT3duZXIiLCJpZCI6NDc0Mjk5MSwicGhvbmUiOiI5OTg1OTk4NTg4IiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZmlyc3RfbmFtZSI6IlZhcmFwcmFzYWRwbXByYXRhcCIsImxhc3RfbmFtZSI6IjgwOTY5OTQ0MjQiLCJjaXR5IjoiIiwic2V4IjoiTWFsZSIsInRlYW0iOiJPd25lciBFbmdhZ2VtZW50IiwiZGV2aXNlX3JvbGUiOiJPd25lcl9Qb3J0YWxfVXNlciIsInBob25lX3ZlcmlmaWVkIjp0cnVlLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYWRkcmVzcyI6IiIsInVwZGF0ZWRfYXQiOiIxNzYxOTgzODg1IiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3J_fcGFzc3dvcmRfZXhwaXJ5Ijo5NDYwNjAwMzI2MjgsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"YjAxMWE2MDgtMDc5Ni00OGZlLTliYjEtNDY0OWJkM2IzNzMx","QID":16711},
     "HYD2963": {"UIF":"eyJlbWFpbCI6InRoaXJ1cGF0aGlyYW90OEBnbWFpbC5jb20iLCJhY2Nlc3NfdG9rZW4iOiJrbS1UMGM0SVN0cU9fcW81dXlWeHZRIiwicm9sZSI6Ik93bmVyIiwiaWQiOjExMTEyMjI2MywicGhvbmUiOiI5NTAyMzIzNTEzIiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZmlyc3RfbmFtZSI6InRhbmRyYSIsImxhc3RfbmFtZSI6InRpcnVwYXRoaXJhbyIsImNpdHkiOiIiLCJzZXgiOiJNYWxlIiwidGVhbSI6IlRyYXZlbCBBZ2VudCIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImFkZHJlc3MiOiIiLCJ1cGRhdGVkX2F0IjoiMTY2NjA5OTMzMyIsImZlYXR1cmVzIjp7fSwic3RhdHVzX2NvZGUiOjEwMCwibWlsbGlzX2xlZnRfZm9yX3Bhc3N3b3JkX2V4cGlyeSI6OTQxMTU1MDQ4NTA1LCJhZGRyZXNzSnNvbiI6e319","UUID":"MWE1OTRmY2ItOGQ0Ny00YTdlLWJhNDQtMTI4Yjk3OTI2OWY0","QID":296969},
-    "HYD3183": {"UIF":"eyJlbWFpbCI6ImthbWFsYWFjaGFAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoia2RQTVZhV3ZVaGg1cTVaeTMxN3pKUSIsInJvbGUiOiJPd25lciIsImlkIjoyMTg0ODczNjEsInBob25lIjoiOTM5MTA0NDA3MSIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzQwNjUyMjIwIiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3JfcGFzc3dvcmRfZXhwaXJ5Ijo5NDA0NjU5NjU0MjYsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"YzA1YmE5ODItY2RhMy00MDhiLTk1NzQtNzMzMDA0NTZiM2Yw","QID":328327},
-    "WAR144": {"UIF":"eyJlbWFpbCI6InZpc2hudWdyYW5kLmhhbmFta29uZGFAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoiSUp5Q2dScWVBUHRrT1czMWRRcTJpZyIsInJvbGUiOiJPd25lciIsImlkIjoyMzcwNDQ0MjgsInBob25lIjoiNjMwMTg4ODg0MyIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzU0NTQ5MjEyIiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3JfcGFzc3dvcmRfZXhwaXJ5Ijo5Mzg3MTc2NDI1MjgsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"OWRhOTk1MjItNzZlMy00ZjkwLWFhODMtN2U3NTM1YzE4YzZi","QID":326437},
+    "HYD3183": {"UIF":"eyJlbWFpbCI6ImthbWFsYWFjaGFAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoia2RQTVZhV3ZVaGg1cTVaeTMxN3pKUSIsInJvbGUiOiJPd25lciIsImlkIjoyMTg0ODczNjEsInBob25lIjoiOTM5MTA0NDA3MSIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzQwNjUyMjIwIiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3J_fcGFzc3dvcmRfZXhwaXJ5Ijo5NDA0NjU5NjU0MjYsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"YzA1YmE5ODItY2RhMy00MDhiLTk1NzQtNzMzMDA0NTZiM2Yw","QID":328327},
+    "WAR144": {"UIF":"eyJlbWFpbCI6InZpc2hudWdyYW5kLmhhbmFta29uZGFAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoiSUp5Q2dScWVBUHRrT1czMWRRcTJpZyIsInJvbGUiOiJPd25lciIsImlkIjoyMzcwNDQ0MjgsInBob25lIjoiNjMwMTg4ODg0MyIsImNvdW50cnlfY29kZSI6Iis5MSIsImRldmlzZV9yb2xlIjoiT3duZXJfUG9ydGFsX1VzZXIiLCJwaG9uZV92ZXJpZmllZCI6dHJ1ZSwiZW1haWxfdmVyaWZpZWQiOnRydWUsInVwZGF0ZWRfYXQiOiIxNzU0NTQ5MjEyIiwiZmVhdHVyZXMiOnt9LCJzdGF0dXNfY29kZSI6MTAwLCJtaWxsaXNfbGVmdF9mb3J_fcGFzc3dvcmRfZXhwaXJ5Ijo5Mzg3MTc2NDI1MjgsImFkZHJlc3NKc29uIjp7fX0%3D","UUID":"OWRhOTk1MjItNzZlMy00ZjkwLWFhODMtN2U3NTM1YzE4YzZi","QID":326437},
     "KMM030": {"UIF":"eyJlbWFpbCI6ImJsdWVtb29uaG90ZWwyNEBnbWFpbC5jb20iLCJhY2Nlc3NfdG9rZW4iOiJaRUtKbzBGWUpUNWROYWplOS1ocV9nIiwicm9sZSI6Ik93bmVyIiwiaWQiOjIwMzc1ODk1MywicGhvbmUiOiI5MTAwNzE4Mzg3IiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZGV2aXNlX3JvbGUiOiJPd25lcl9Qb3J0YWxfVXNlciIsInBob25lX3ZlcmlmaWVkIjp0cnVlLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwidXBkYXRlZF9hdCI6IjE3MjEzOTEzMzkiLCJmZWF0dXJlcyI6e30sInN0YXR1c19jb2RlIjoxMDAsIm1pbGxpc19sZWZ0X2Zvcl9wYXNzd29yZF9leHBpcnkiOjkyODMzNzE4MDMzMywiYWRkcmVzc0pzb24iOnt9fQ%3D%3D","UUID":"NzE2MGQxMDctNDliNS00YWE5LWI4MGMtY2E0ODQ1ZmZmNGIx","QID":244631},
-    "HYD1090": {"UIF":"eyJlbWFpbCI6InNoYW50aGFyZXNpZGVuY3lsb2RnZUBnbWFpbC5jb20iLCJhY2Nlc3NfdG9rZW4iOiJMV1d3VmxHOFhwRHVZQnBySXpkQkhnIiwicm9sZSI6Ik93bmVyIiwiaWQiOjIyMzI4MjUzNCwicGhvbmUiOiI4NTIwMDA1NDc5IiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZmlyc3RfbmFtZSI6Ikd1ZXN0Iiwic2V4IjoiTWFsZSIsInRlYW0iOiJNYXJrZXRpbmciLCJkZXZpc2Vfcm9sZSI6Ik93bmVyX1BvcnRhbF9Vc2VyIiwicGhvbmVfdmVyaWZpZWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ1cGRhdGVkX2F0IjoiMTc0OTIxMjg3NyIsImZlYXR1cmVzIjp7fSwic3RhdHVzX2NvZGUiOjEwMCwibWlsbGlzX2xlZnRfZm9yX3Bhc3N3b3JkX2V4cGlyeSI6OTMzNzUwNTgwMzk5LCJhZGRyZXNzSnNvbiI6e319","UUID":"Zjg4NDc3ZjgtMzM5Zi00ZmYwLWE2OGItYjdkMDEyOGQzNWJk","QID":78637},
+    "HYD1090": {"UIF":"eyJlbWFpbCI6InNoYW50aGFyZXNpZGVuY3lsb2RnZUBnbWFpbC5jb20iLCJhY2Nlc3NfdG9rZW4iOiJMV1d3VmxHOFhwRHVZQnBySXpkQkhnIiwicm9sZSI6Ik93bmVyIiwiaWQiOjIyMzI4MjUzNCwicGhvbmUiOiI4NTIwMDA1NDc5IiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZmlyc3RfbmFtZSI6Ikd1ZXN0Iiwic2V4IjoiTWFsZSIsInRlYW0iOiJNYXJrZXRpbmciLCJkZXZpc2Vfcm9sZSI6Ik93bmVyX1BvcnRhbF9Vc2VyIiwicGhvbmVfdmVyaWZpZWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ1cGRhdGVkX2F0IjoiMTc0OTIxMjg3NyIsImZlYXR1cmVzIjp7fSwic3RhdHVzX2NvZGQiOjEwMCwibWlsbGlzX2xlZnRfZm9yX3Bhc3N3b3JkX2V4cGlyeSI6OTMzNzUwNTgwMzk5LCJhZGRyZXNzSnNvbiI6e319","UUID":"Zjg4NDc3ZjgtMzM5Zi00ZmYwLWE2OGItYjdkMDEyOGQzNWJk","QID":78637},
     "HYD588": {"UIF":"eyJlbWFpbCI6ImtlZXJ0aGljaGFuZHJhOTJAeWFob28uY29tIiwiYWNjZXNzX3Rva2VuIjoibWNCYlEzUUhxZGtRSUYtWUU0X3d0dyIsInJvbGUiOiJPd25lciIsImlkIjoxMTA1NjkzOTUsInBob25lIjoiOTk1OTY2NjYwMiIsImNvdW50cnlfY29kZSI6Iis5MSIsImZpcnN0X25hbWUiOiJCYW5kYXJ1IiwibGFzdF9uYW1lIjoiVmVua2F0YXNhdHlha2VlcnRoaSIsImNpdHkiOiIiLCJzZXgiOiJNYWxlIiwidGVhbSI6Ik93bmVyIEVuZ2FnZW1lbnQiLCJkZXZpc2Vfcm9sZSI6Ik93bmVyX1BvcnRhbF9Vc2VyIiwicGhvbmVfdmVyaWZpZWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhZGRyZXNzIjoiIiwidXBkYXRlZF9hdCI6IjE3MDczOTk3NTIiLCJmZWF0dXJlcyI6e30sInN0YXR1c19jb2RlIjoxMDAsIm1pbGxpc19sZWZ0X2Zvcl9wYXNzd29yZF9leHBpcnkiOjk0NjkyMjA2NjUxOCwiYWRkcmVzc0pzb24iOnt9fQ%3D%3D","UUID":"ZjMwZmZlNTgtYTlkNi00NDEzLTlmM2UtY2E5MWI1NTU4ZWUw","QID":37182},
     "NGA028": {"UIF":"eyJlbWFpbCI6ImtzYW5qZWV2YTlAZ21haWwuY29tIiwiYWNjZXNzX3Rva2VuIjoiX3FQZFdWSjNTeHNINVE3ZGs0S05xdyIsInJvbGUiOiJPd25lciIsImlkIjo3MjA4MjY4OCwicGhvbmUiOiI4NDk5ODgzMzExIiwiY291bnRyeV9jb2RlIjoiKzkxIiwiZmlyc3RfbmFtZSI6IkthbXNhbmkiLCJsYXN0X25hbWUiOiJTYW5qZWV2YSIsInRlYW0iOiJPcGVyYXRpb25zIiwiZGV2aXNlX3JvbGUiOiJPd25lcl9Qb3J0YWxfVXNlciIsInBob25lX3ZlcmlmaWVkIjp0cnVlLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwidXBkYXRlZF9hdCI6IjE3NjQ3NTc5NjIiLCJmZWF0dXJlcyI6e30sInN0YXR1c19jb2RlIjoxMDAsIm1pbGxpc19sZWZ0X2Zvcl9wYXNzd29yZF9leHBpcnkiOjk0NzQyMTczMzQzMSwiYWRkcmVzc0pzb24iOnt9fQ%3D%3D","UUID":"NzRkNjcyMmEtNTU5Ni00NWM0LTk3NjQtNmFkZTVjODE5YjQ2","QID":353264},
 }
-# =========================================================
-# TELEGRAM ROUTING (YOUR EXISTING MAPPING)
-# =========================================================
+
 PROPERTY_CHAT_IDS = {
     "HYD2857": -5187550502,
     "HYD2728": -5186344252,
@@ -76,24 +76,26 @@ PROPERTY_CHAT_IDS = {
     "NGA028":  -5298670289,
 }
 
-
 # =========================================================
-# GLOBAL LIMITS (FOR 900MB EC2)
+# GLOBAL LIMITS
 # =========================================================
 PROP_PARALLEL_LIMIT = 5
 DETAIL_PARALLEL_LIMIT = 8
-
 prop_semaphore = asyncio.Semaphore(PROP_PARALLEL_LIMIT)
 detail_semaphore = asyncio.Semaphore(DETAIL_PARALLEL_LIMIT)
 
-# =========================================================
-# GLOBAL SESSIONS / CACHE
-# =========================================================
 HTTP: Optional[aiohttp.ClientSession] = None
 
 CACHE: Dict[str, Any] = {}
-CONFIRMED: Dict[str, Any] = {}   # request_id -> booking payload
+CONFIRMED: Dict[str, Any] = {}
 TG_OFFSET = 0
+
+# =========================================================
+# ✅ 3 MIN ULTRA FAST SNAPSHOT MEMORY
+# =========================================================
+PROPERTY_SNAPSHOT: Dict[str, Dict[str, Any]] = {}
+PROPERTY_ROOMS_SNAPSHOT: Dict[str, Any] = {}   # code -> {floors, rooms[]}
+SNAPSHOT_LAST_REFRESH = 0
 
 
 def cache_get(key: str):
@@ -124,10 +126,6 @@ def haversine_km(lat1, lon1, lat2, lon2):
 
 
 async def geocode_free(query: str) -> Optional[Tuple[float, float]]:
-    """
-    FREE geocoding: OpenStreetMap Nominatim
-    (Google requires API key, so we use free one)
-    """
     q = (query or "").strip()
     if not q:
         return None
@@ -157,10 +155,6 @@ async def geocode_free(query: str) -> Optional[Tuple[float, float]]:
 
 
 def send_email(to_email: str, subject: str, body: str):
-    """
-    SMTP free (gmail app password etc.)
-    If SMTP not configured => safe no-op
-    """
     if not (SMTP_HOST and SMTP_USER and SMTP_PASS and SMTP_FROM):
         return
 
@@ -204,10 +198,6 @@ async def tg_send(chat_id: int, text: str, reply_markup: dict = None):
 # OYO APIS
 # =========================================================
 async def fetch_property_details(P: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Fetch property details from OYO:
-    name, alternate_name, address, map_link, latitude, longitude
-    """
     ck = f"prop_details:{P['QID']}"
     cached = cache_get(ck)
     if cached is not None:
@@ -237,32 +227,17 @@ async def fetch_property_details(P: Dict[str, Any]) -> Dict[str, Any]:
                     "latitude": data.get("latitude", None),
                     "longitude": data.get("longitude", None),
                 }
-                cache_set(ck, out, 3600)  # property details not changing frequently
+                cache_set(ck, out, 3600)
                 return out
         except Exception:
             await asyncio.sleep(1 + attempt)
 
-    # fallback safe empty
-    out = {
-        "name": "",
-        "alternate_name": "",
-        "plot_number": "",
-        "street": "",
-        "pincode": "",
-        "city": "",
-        "country": "",
-        "map_link": "",
-        "latitude": None,
-        "longitude": None,
-    }
+    out = {"name":"","alternate_name":"","plot_number":"","street":"","pincode":"","city":"","country":"","map_link":"","latitude":None,"longitude":None}
     cache_set(ck, out, 300)
     return out
 
 
 async def fetch_rooms(P: Dict[str, Any]) -> List[Dict[str, str]]:
-    """
-    Fetch all rooms from OYO roomsNew.
-    """
     ck = f"rooms:{P['QID']}"
     cached = cache_get(ck)
     if cached is not None:
@@ -298,7 +273,7 @@ async def fetch_rooms(P: Dict[str, Any]) -> List[Dict[str, str]]:
                         "type": str(rm.get("room_type_name") or rm.get("type") or "Standard")
                     })
 
-                cache_set(ck, rooms, 300)
+                cache_set(ck, rooms, 600)
                 return rooms
         except Exception:
             await asyncio.sleep(1 + attempt)
@@ -307,43 +282,7 @@ async def fetch_rooms(P: Dict[str, Any]) -> List[Dict[str, str]]:
     return []
 
 
-async def count_available_rooms(P: Dict[str, Any], from_: str, to: str) -> int:
-    """
-    ✅ Correct available rooms calculation:
-    Total Rooms (roomsNew) - Booked Rooms (booking list -> booking details -> room numbers)
-    """
-
-    ck = f"avail:{P['QID']}:{from_}:{to}"
-    cached = cache_get(ck)
-    if cached is not None:
-        return cached
-
-    try:
-        # total rooms
-        rooms = await fetch_rooms(P)
-        total_rooms = len(rooms)
-
-        # booked rooms (accurate)
-        booked_rooms = await fetch_booked_rooms_precise(P, from_, to)
-        booked_count = len(booked_rooms)
-
-        # available = total - booked
-        available = max(total_rooms - booked_count, 0)
-
-        cache_set(ck, available, 45)
-        return available
-
-    except Exception:
-        cache_set(ck, 0, 30)
-        return 0
-
-
-
-
 async def fetch_booking_details_rooms(P: Dict[str, Any], booking_id: str) -> List[str]:
-    """
-    Accurate room numbers extracted from booking details endpoint.
-    """
     url = "https://www.oyoos.com/hms_ms/api/v1/visibility/booking_details_with_entities"
     params = {
         "qid": P["QID"],
@@ -372,10 +311,26 @@ async def fetch_booking_details_rooms(P: Dict[str, Any], booking_id: str) -> Lis
             return []
 
 
+def _parse_dt(s: str) -> Optional[datetime]:
+    try:
+        return datetime.strptime(str(s).strip(), "%Y-%m-%d")
+    except Exception:
+        return None
+
+
+# =========================================================
+# ✅ FIXED BOOKED ROOMS (OVERLAP + PAGINATION)
+# =========================================================
 async def fetch_booked_rooms_precise(P: Dict[str, Any], start_date: str, end_date: str) -> Set[str]:
     """
-    ✅ correct booked rooms:
-      booking list -> booking details -> room numbers
+    ✅ Precise booked rooms for date window:
+    booking list -> booking details -> room numbers
+
+    ✅ FIXED with your FINAL LOCKED in-house logic:
+    - include only bookings where status == "Checked In"
+    - active-date condition:
+        if not (ci <= target_dt <= co or (ci == tf_date + timedelta(days=1) and target_dt <= co)):
+            continue
     """
     ck = f"booked:{P['QID']}:{start_date}:{end_date}"
     cached = cache_get(ck)
@@ -405,17 +360,40 @@ async def fetch_booked_rooms_precise(P: Dict[str, Any], start_date: str, end_dat
             if r.status != 200:
                 cache_set(ck, booked, 30)
                 return booked
+
             data = await r.json()
             bookings = (data.get("entities", {}) or {}).get("bookings", {}) or {}
 
-            booking_ids = []
+            # ✅ Your fixed in-house logic
+            tf_date = datetime.strptime(start_date, "%Y-%m-%d")
+            target_dt = tf_date
+
+            booking_ids: List[str] = []
             for b in bookings.values():
                 status = (b.get("status") or "").strip()
-                if status in ("Checked In", "Confirm Booking"):
-                    bid = str(b.get("booking_no") or "").strip()
-                    if bid:
-                        booking_ids.append(bid)
+                if status != "Checked In":
+                    continue
 
+                ci_s = str(b.get("checkin") or "").strip()
+                co_s = str(b.get("checkout") or "").strip()
+                if not ci_s or not co_s:
+                    continue
+
+                try:
+                    ci = datetime.strptime(ci_s, "%Y-%m-%d")
+                    co = datetime.strptime(co_s, "%Y-%m-%d")
+                except Exception:
+                    continue
+
+                # ✅ FINAL ACTIVE DATE RULE (LOCKED)
+                if not (ci <= target_dt <= co or (ci == tf_date + timedelta(days=1) and target_dt <= co)):
+                    continue
+
+                bid = str(b.get("booking_no") or "").strip()
+                if bid:
+                    booking_ids.append(bid)
+
+            # ✅ Fetch precise room numbers using details API
             tasks = [fetch_booking_details_rooms(P, bid) for bid in booking_ids]
             results = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -425,98 +403,249 @@ async def fetch_booked_rooms_precise(P: Dict[str, Any], start_date: str, end_dat
                 for rn in res:
                     booked.add(str(rn))
 
-        cache_set(ck, booked, 30)
+        cache_set(ck, booked, 60)
         return booked
+
     except Exception:
         cache_set(ck, booked, 30)
         return booked
 
 
-def _is_oyo_app_booking(b: Dict[str, Any]) -> bool:
-    src = str(b.get("source", "") or "").strip()
-    ota = str(b.get("ota_source", "") or "").strip()
-    sub = str(b.get("sub_source", "") or "").strip()
-    # OYO direct heuristics
-    if src in ["Android App", "IOS App", "Web Booking", "Mobile Web Booking", "Website Booking", "Direct"]:
-        return True
-    if "OYO" in ota:
-        return True
-    if sub == "OYO":
-        return True
-    return False
-
-
-async def compute_yesterday_arr_and_app_arr(P: Dict[str, Any], prop_code: str) -> Tuple[float, float]:
+async def count_available_rooms(P: Dict[str, Any], from_: str, to: str) -> int:
     """
-    ✅ ARR / APP ARR based on yesterday checkin bookings.
+    ✅ Correct available rooms:
+    total rooms - booked rooms (precise overlap)
     """
-    y = (datetime.now().date() - timedelta(days=1)).strftime("%Y-%m-%d")
-    ck = f"arr:{prop_code}:{y}"
-
+    ck = f"avail:v2:{P['QID']}:{from_}:{to}"
     cached = cache_get(ck)
     if cached is not None:
         return cached
 
-    url = "https://www.oyoos.com/hms_ms/api/v1/get_booking_with_ids"
-    params = {
-        "qid": P["QID"],
-        "checkin_from": y,
-        "checkin_till": y,
-        "batch_count": 100,
-        "batch_offset": 0,
-        "visibility_required": "true",
-        "additionalParams": "payment_hold_transaction,guest,stay_details",
-        "decimal_price": "true",
-        "ascending": "true",
-        "sort_on": "checkin_date"
-    }
-    cookies = {"uif": P["UIF"], "uuid": P["UUID"]}
-    headers = {"accept": "application/json", "x-qid": str(P["QID"]), "x-source-client": "merchant"}
+    rooms = await fetch_rooms(P)
+    total_rooms = len(rooms)
 
-    total_amount = 0.0
-    total_rooms = 0
+    booked_rooms = await fetch_booked_rooms_precise(P, from_, to)
+    available = max(total_rooms - len(booked_rooms), 0)
 
-    oyo_amount = 0.0
-    oyo_rooms = 0
-
-    try:
-        async with HTTP.get(url, params=params, cookies=cookies, headers=headers, timeout=30) as r:
-            if r.status != 200:
-                cache_set(ck, (0.0, 0.0), 300)
-                return 0.0, 0.0
-            data = await r.json()
-            bookings = (data.get("entities", {}) or {}).get("bookings", {}) or {}
-
-            for b in bookings.values():
-                paid = float(b.get("get_amount_paid") or 0)
-                rooms = int(b.get("no_of_rooms") or 1)
-                total_amount += paid
-                total_rooms += rooms
-
-                if _is_oyo_app_booking(b):
-                    oyo_amount += paid
-                    oyo_rooms += rooms
-
-            arr = round(total_amount / total_rooms, 2) if total_rooms else 0.0
-            app_arr = round(oyo_amount / oyo_rooms, 2) if oyo_rooms else 0.0
-
-            cache_set(ck, (arr, app_arr), 300)
-            return arr, app_arr
-    except Exception:
-        cache_set(ck, (0.0, 0.0), 300)
-        return 0.0, 0.0
+    cache_set(ck, available, 120)
+    return available
 
 
 # =========================================================
-# TELEGRAM POLLING (NO HTTPS NEEDED)
+# ✅ ROOM PRICE LOGIC (highest per-day from last 10 bookings)
+# =========================================================
+async def compute_room_price_map(P: Dict[str, Any], prop_code: str) -> Dict[str, float]:
+    """
+    For each room:
+    - find last 10 bookings where that room assigned
+    - compute per-day price = (paid + balance)/stay_days
+    - room_price = max(per-day price in last 10 bookings)
+    """
+    ck = f"room_prices:{prop_code}"
+    cached = cache_get(ck)
+    if cached is not None:
+        return cached
+
+    # fetch last 90 days bookings
+    till = datetime.now().date()
+    frm = (till - timedelta(days=90)).strftime("%Y-%m-%d")
+    till_s = till.strftime("%Y-%m-%d")
+
+    url = "https://www.oyoos.com/hms_ms/api/v1/get_booking_with_ids"
+    cookies = {"uif": P["UIF"], "uuid": P["UUID"]}
+    headers = {"accept": "application/json", "x-qid": str(P["QID"]), "x-source-client": "merchant"}
+
+    # store recent bookings metadata
+    recent_bookings: List[Dict[str, Any]] = []
+    offset = 0
+
+    try:
+        while True:
+            params = {
+                "qid": P["QID"],
+                "checkin_from": frm,
+                "checkin_till": till_s,
+                "batch_count": 100,
+                "batch_offset": offset,
+                "visibility_required": "true",
+                "additionalParams": "payment_hold_transaction,guest,stay_details",
+                "decimal_price": "true",
+                "ascending": "false",
+                "sort_on": "checkin_date"
+            }
+
+            async with HTTP.get(url, params=params, cookies=cookies, headers=headers, timeout=35) as r:
+                if r.status != 200:
+                    break
+                data = await r.json()
+                ids = data.get("bookingIds") or []
+                bookings = (data.get("entities", {}) or {}).get("bookings", {}) or {}
+
+                if not bookings:
+                    break
+
+                # keep recent first
+                for b in bookings.values():
+                    status = str(b.get("status") or "").strip()
+                    if status in ("Cancelled", "No Show"):
+                        continue
+                    recent_bookings.append(b)
+
+                if len(ids) < 100:
+                    break
+                offset += 100
+
+            # safety limit: avoid too heavy
+            if len(recent_bookings) > 800:
+                break
+
+        # booking details for room assignment (batch)
+        # map room -> list(per_day_price) limited 10
+        room_prices: Dict[str, List[float]] = {}
+
+        # take most recent first
+        recent_bookings = sorted(recent_bookings, key=lambda x: str(x.get("checkin") or ""), reverse=True)
+
+        for b in recent_bookings:
+            if sum(len(v) for v in room_prices.values()) > 400:
+                break
+
+            bid = str(b.get("booking_no") or "").strip()
+            if not bid:
+                continue
+
+            ci = _parse_dt(b.get("checkin"))
+            co = _parse_dt(b.get("checkout"))
+            if not ci or not co:
+                continue
+
+            stay_days = max((co - ci).days, 1)
+            paid = float(b.get("get_amount_paid") or 0.0)
+            balance = float(b.get("payable_amount") or 0.0)
+            total_amt = paid + balance
+            per_day = float(total_amt) / float(stay_days)
+
+            assigned_rooms = await fetch_booking_details_rooms(P, bid)
+            if not assigned_rooms:
+                continue
+
+            for rn in assigned_rooms:
+                lst = room_prices.get(rn, [])
+                if len(lst) < 10:
+                    lst.append(per_day)
+                    room_prices[rn] = lst
+
+        # finalize: room -> max(per_day)
+        out: Dict[str, float] = {}
+        for rn, prices in room_prices.items():
+            out[rn] = round(max(prices) if prices else 0.0, 2)
+
+        cache_set(ck, out, 180)  # refresh with snapshot (3 min)
+        return out
+
+    except Exception:
+        cache_set(ck, {}, 120)
+        return {}
+
+
+# =========================================================
+# SNAPSHOT REFRESH LOOP (every 3 minutes)
+# =========================================================
+async def refresh_all_snapshots_loop():
+    global PROPERTY_SNAPSHOT, PROPERTY_ROOMS_SNAPSHOT, SNAPSHOT_LAST_REFRESH
+    await asyncio.sleep(2)
+
+    while True:
+        try:
+            start = time.time()
+
+            today = datetime.now().strftime("%Y-%m-%d")
+            tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+            async def one_prop(code: str, P: Dict[str, Any]):
+                async with prop_semaphore:
+                    d = await fetch_property_details(P)
+                    rooms = await fetch_rooms(P)
+
+                    # booked overlap for today window
+                    booked_rooms = await fetch_booked_rooms_precise(P, today, tomorrow)
+
+                    # per-room price map
+                    room_price_map = await compute_room_price_map(P, code)
+
+                    floors = sorted({r["floor"] for r in rooms}) or ["1"]
+                    out_rooms = []
+                    for r in rooms:
+                        rn = r["room"]
+                        status = "booked" if rn in booked_rooms else "available"
+                        std_price = float(room_price_map.get(rn, 0.0) or 0.0)
+                        out_rooms.append({**r, "status": status, "standard_price": std_price})
+
+                    # property today price = least room price (min)
+                    non_zero_prices = [x["standard_price"] for x in out_rooms if x.get("standard_price", 0) > 0]
+                    today_price = min(non_zero_prices) if non_zero_prices else 0.0
+
+                    address = " ".join([
+                        d.get("plot_number", ""),
+                        d.get("street", ""),
+                        d.get("city", ""),
+                        d.get("pincode", "")
+                    ]).strip()
+
+                    name = d.get("alternate_name") or d.get("name") or code
+
+                    available = max(len(rooms) - len(booked_rooms), 0)
+
+                    PROPERTY_ROOMS_SNAPSHOT[code] = {
+                        "floors": floors,
+                        "rooms": out_rooms
+                    }
+
+                    return code, {
+                        "code": code,
+                        "name": name,
+                        "address": address,
+                        "city": d.get("city", ""),
+                        "pincode": d.get("pincode", ""),
+                        "map_link": d.get("map_link", ""),
+                        "latitude": d.get("latitude", None),
+                        "longitude": d.get("longitude", None),
+                        "today_price": float(round(today_price)),   # ✅ property today price
+                        "available_rooms": available,
+                        "updated_at": int(time.time())
+                    }
+
+            tasks = [one_prop(code, P) for code, P in PROPERTIES.items()]
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            snap: Dict[str, Dict[str, Any]] = {}
+            for r in results:
+                if isinstance(r, Exception):
+                    continue
+                code, payload = r
+                snap[code] = payload
+
+            if snap:
+                PROPERTY_SNAPSHOT = snap
+                SNAPSHOT_LAST_REFRESH = int(time.time())
+
+            took = round(time.time() - start, 2)
+            print(f"✅ SNAPSHOT REFRESH DONE: {len(PROPERTY_SNAPSHOT)} properties in {took}s")
+
+        except Exception as e:
+            print("❌ SNAPSHOT REFRESH FAILED:", e)
+
+        await asyncio.sleep(180)  # every 3 minutes
+
+
+# =========================================================
+# TELEGRAM POLLING
 # =========================================================
 async def tg_polling_loop():
     global TG_OFFSET
     if not BOT_TOKEN:
         print("⚠️ TELEGRAM_BOT_TOKEN missing. Polling disabled.")
         return
-
-    print("✅ Telegram polling started (no HTTPS webhook required)...")
 
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
 
@@ -553,7 +682,6 @@ async def tg_polling_loop():
                         CONFIRMED[request_id] = booking
                         await tg_send(chat_id, f"✅ CONFIRMED <code>{request_id}</code>")
 
-                        # guest confirmation email
                         try:
                             if booking.get("email"):
                                 send_email(
@@ -573,7 +701,6 @@ async def tg_polling_loop():
                         CONFIRMED[request_id] = booking
                         await tg_send(chat_id, f"❌ REJECTED <code>{request_id}</code>")
 
-                        # guest rejection email
                         try:
                             if booking.get("email"):
                                 send_email(
@@ -599,11 +726,12 @@ async def tg_polling_loop():
 async def on_startup():
     global HTTP
     if HTTP is None:
-        timeout = aiohttp.ClientTimeout(total=40)
-        connector = aiohttp.TCPConnector(limit=50, ttl_dns_cache=300)
+        timeout = aiohttp.ClientTimeout(total=45)
+        connector = aiohttp.TCPConnector(limit=60, ttl_dns_cache=300)
         HTTP = aiohttp.ClientSession(timeout=timeout, connector=connector)
 
     asyncio.create_task(tg_polling_loop())
+    asyncio.create_task(refresh_all_snapshots_loop())
 
 
 @app.on_event("shutdown")
@@ -625,73 +753,29 @@ async def health():
 @app.get("/api/search")
 async def search(location: str = "", from_: str = "", to: str = ""):
     """
-    Returns properties sorted by distance from location.
-    Uses FREE geocoding, no Google key.
+    ✅ Ultra-fast:
+    - returns from snapshot (memory)
+    - only distance computed dynamically
     """
-
-    # ✅ Default dates ONCE here (fixes UnboundLocalError risk)
-    if not from_:
-        from_ = datetime.now().strftime("%Y-%m-%d")
-    if not to:
-        to = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
-
     loc = (location or "").strip()
     user_geo = await geocode_free(loc) if loc else None
 
-    hotels: List[Dict[str, Any]] = []
-
-    async def process_one(prop_code: str, P: Dict[str, Any]):
-        async with prop_semaphore:
-            d = await fetch_property_details(P)
-
-            lat = d.get("latitude")
-            lon = d.get("longitude")
-
-            dist = None
-            if user_geo and lat is not None and lon is not None:
-                dist = round(haversine_km(user_geo[0], user_geo[1], float(lat), float(lon)), 2)
-
-            arr, app_arr = await compute_yesterday_arr_and_app_arr(P, prop_code)
-
-            available_rooms = await count_available_rooms(P, from_, to)
-
-            address = " ".join([
-                d.get("plot_number", ""),
-                d.get("street", ""),
-                d.get("city", ""),
-                d.get("pincode", "")
-            ]).strip()
-
-            name = d.get("alternate_name") or d.get("name") or prop_code
-
-            hotels.append({
-                "code": prop_code,
-                "name": name,
-                "address": address,
-                "city": d.get("city", ""),
-                "pincode": d.get("pincode", ""),
-                "map_link": d.get("map_link", ""),
-                "latitude": lat,
-                "longitude": lon,
-                "distance_km": dist,
-
-                # ✅ keep your field
-                "today_price": round(arr),     # ✅ show as Today Price
-
-                # ✅ add frontend compatible field (DO NOT remove today_price)
-                "arr": int(round(arr)),
-
-                "app_arr": app_arr,
-                "available_rooms": available_rooms
-            })
-
-    tasks = [process_one(code, P) for code, P in PROPERTIES.items()]
-    await asyncio.gather(*tasks, return_exceptions=True)
+    hotels = list(PROPERTY_SNAPSHOT.values()) if PROPERTY_SNAPSHOT else []
 
     if user_geo:
+        for h in hotels:
+            lat = h.get("latitude")
+            lon = h.get("longitude")
+            if lat is not None and lon is not None:
+                h["distance_km"] = round(haversine_km(user_geo[0], user_geo[1], float(lat), float(lon)), 2)
+            else:
+                h["distance_km"] = None
         hotels.sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 999999))
+    else:
+        for h in hotels:
+            h["distance_km"] = None
 
-    return {"hotels": hotels}
+    return {"hotels": hotels, "snapshot_time": SNAPSHOT_LAST_REFRESH}
 
 
 @app.get("/api/property/{code}")
@@ -700,48 +784,44 @@ async def property_details(code: str, from_: str = "", to: str = ""):
     if not P:
         return JSONResponse({"error": "Invalid property"}, status_code=404)
 
-    if not from_:
-        from_ = datetime.now().strftime("%Y-%m-%d")
-    if not to:
-        to = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    # return from snapshot (ultra fast)
+    prop = PROPERTY_SNAPSHOT.get(code)
+    prop_rooms = PROPERTY_ROOMS_SNAPSHOT.get(code)
 
-    d = await fetch_property_details(P)
-    rooms = await fetch_rooms(P)
-    booked_rooms = await fetch_booked_rooms_precise(P, from_, to)
-    arr, app_arr = await compute_yesterday_arr_and_app_arr(P, code)
+    if not prop or not prop_rooms:
+        # fallback live (rare first few seconds after boot)
+        d = await fetch_property_details(P)
+        rooms = await fetch_rooms(P)
+        floors = sorted({r["floor"] for r in rooms}) or ["1"]
+        address = " ".join([
+            d.get("plot_number", ""),
+            d.get("street", ""),
+            d.get("city", ""),
+            d.get("pincode", "")
+        ]).strip()
 
-    floors = sorted({r["floor"] for r in rooms}) or ["1"]
-
-    out_rooms = []
-    for r in rooms:
-        rn = r["room"]
-        status = "booked" if rn in booked_rooms else "available"
-        out_rooms.append({**r, "status": status})
-
-    address = " ".join([
-        d.get("plot_number", ""),
-        d.get("street", ""),
-        d.get("city", ""),
-        d.get("pincode", "")
-    ]).strip()
+        return {
+            "code": code,
+            "name": d.get("alternate_name") or d.get("name") or code,
+            "address": address,
+            "map_link": d.get("map_link", ""),
+            "latitude": d.get("latitude", None),
+            "longitude": d.get("longitude", None),
+            "today_price": 0,
+            "floors": floors,
+            "rooms": [{**r, "status": "available", "standard_price": 0} for r in rooms]
+        }
 
     return {
-        "code": code,
-        "name": d.get("alternate_name") or d.get("name") or code,
-        "address": address,
-        "map_link": d.get("map_link", ""),
-        "latitude": d.get("latitude", None),
-        "longitude": d.get("longitude", None),
-
-        # ✅ keep your existing field
-        "yesterday_arr": arr,
-
-        # ✅ add frontend compatible field
-        "arr": int(round(arr)),
-
-        "app_arr": app_arr,
-        "floors": floors,
-        "rooms": out_rooms
+        "code": prop["code"],
+        "name": prop["name"],
+        "address": prop["address"],
+        "map_link": prop["map_link"],
+        "latitude": prop["latitude"],
+        "longitude": prop["longitude"],
+        "today_price": prop.get("today_price", 0),
+        "floors": prop_rooms["floors"],
+        "rooms": prop_rooms["rooms"]
     }
 
 
@@ -795,7 +875,6 @@ async def book(req: Request):
 
     await tg_send(chat_id, text, reply_markup=keyboard)
 
-    # guest email (request received)
     try:
         if data.get("email"):
             send_email(
