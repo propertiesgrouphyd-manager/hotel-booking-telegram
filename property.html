@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Property</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
+    .card3d{transform-style:preserve-3d;transition:transform .15s ease, box-shadow .15s ease}
+    .card3d:hover{transform:translateY(-4px) rotateX(3deg) rotateY(-3deg);box-shadow:0 22px 70px rgba(0,0,0,.35)}
+    .disabled{opacity:.45;pointer-events:none;filter:saturate(.3)}
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-white">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between">
+      <a href="javascript:history.back()" class="text-xl font-bold">← Back</a>
+      <div class="text-sm text-slate-300" id="meta"></div>
+    </div>
+
+    <div class="mt-6 glass rounded-3xl p-6">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="text-3xl font-semibold" id="title">Loading...</div>
+          <div class="text-slate-300 text-sm mt-1" id="addr"></div>
+        </div>
+        <div class="text-right">
+          <div class="text-slate-300 text-xs">Today Price</div>
+          <div class="text-3xl font-bold" id="arr">₹0</div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex gap-2 flex-wrap" id="floors"></div>
+      <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="rooms"></div>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/60 p-4">
+    <div class="glass rounded-3xl w-full max-w-xl p-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <div class="text-2xl font-semibold" id="mTitle"></div>
+          <div class="text-slate-300 text-sm" id="mMeta"></div>
+        </div>
+        <button onclick="closeModal()" class="text-slate-200 hover:text-white">✕</button>
+      </div>
+
+      <div class="mt-5">
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <input id="bName" placeholder="Full name" class="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+          <input id="bPhone" placeholder="Phone" class="rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+          <input id="bEmail" placeholder="Email" class="col-span-2 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+          <input id="bAddress" placeholder="Address (optional)" class="col-span-2 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+        </div>
+
+        <button onclick="submitBooking()" class="mt-4 w-full rounded-2xl bg-white text-slate-950 font-semibold py-3 hover:opacity-90">
+          Request Booking
+        </button>
+
+        <div id="status" class="mt-3 text-sm text-slate-300"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const qs = new URLSearchParams(location.search);
+  const code = qs.get("code");
+  const from = qs.get("from");
+  const to = qs.get("to");
+  let currentFloor = null;
+  let property = null;
+  let selectedRoom = null;
+
+  document.getElementById("meta").innerText = `${code} • ${from} → ${to}`;
+
+  async function load(){
+    const res = await fetch(`/api/property/${code}?from=${from}&to=${to}`);
+    const data = await res.json();
+    property = data;
+
+    document.getElementById("title").innerText = data.name;
+    document.getElementById("addr").innerText = data.address;
+
+    // show today price (value comes from yesterday_arr field)
+    const todayPrice = Math.round(data.yesterday_arr || 0);
+    document.getElementById("arr").innerText = `₹${todayPrice}`;
+
+    currentFloor = data.floors[0];
+    renderFloors();
+    renderRooms();
+  }
+
+  function renderFloors(){
+    const floors = document.getElementById("floors");
+    floors.innerHTML = "";
+    property.floors.forEach(f => {
+      const btn = document.createElement("button");
+      btn.className = `px-4 py-2 rounded-full border ${f===currentFloor ? "bg-white text-slate-950 border-white" : "bg-white/5 border-white/10 text-slate-100"}`;
+      btn.innerText = `Floor ${f}`;
+      btn.onclick = ()=>{ currentFloor = f; renderFloors(); renderRooms(); };
+      floors.appendChild(btn);
+    });
+  }
+
+  function renderRooms(){
+    const rooms = document.getElementById("rooms");
+    rooms.innerHTML = "";
+    const list = property.rooms.filter(r => r.floor === currentFloor);
+    const todayPrice = Math.round(property.yesterday_arr || 0);
+
+    list.forEach(r => {
+      const el = document.createElement("div");
+      const isAvailable = r.status === "available";
+      const badge = r.status === "available" ? "🟢 Available" : (r.status === "requested" ? "🟡 Requested" : "🔴 Booked/Occupied");
+      el.className = `glass rounded-3xl p-4 card3d ${isAvailable ? "" : "disabled"}`;
+
+      el.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="text-xl font-semibold">Room ${r.room}</div>
+          <div class="text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10">${badge}</div>
+        </div>
+        <div class="mt-3 text-slate-300 text-sm">${r.type || "Standard"} • ₹${todayPrice}</div>
+        <div class="mt-4 grid grid-cols-3 gap-2 text-xs text-slate-200">
+          <div class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center">AC</div>
+          <div class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center">WiFi</div>
+          <div class="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-center">TV</div>
+        </div>
+        <button class="mt-4 w-full rounded-2xl bg-white text-slate-950 font-semibold py-2 hover:opacity-90">
+          Book
+        </button>
+      `;
+      el.onclick = ()=> openModal(r);
+      rooms.appendChild(el);
+    });
+  }
+
+  function openModal(room){
+    selectedRoom = room;
+    const todayPrice = Math.round(property.yesterday_arr || 0);
+
+    document.getElementById("mTitle").innerText = `${property.name} • Room ${room.room}`;
+    document.getElementById("mMeta").innerText = `${from} → ${to} • Today Price ₹${todayPrice}`;
+    document.getElementById("status").innerText = "";
+    document.getElementById("modal").classList.remove("hidden");
+    document.getElementById("modal").classList.add("flex");
+  }
+
+  function closeModal(){
+    document.getElementById("modal").classList.add("hidden");
+    document.getElementById("modal").classList.remove("flex");
+  }
+
+  async function submitBooking(){
+    const payload = {
+      property_code: code,
+      room: selectedRoom.room,
+      from, to,
+      name: document.getElementById("bName").value.trim(),
+      phone: document.getElementById("bPhone").value.trim(),
+      email: document.getElementById("bEmail").value.trim(),
+      address: document.getElementById("bAddress").value.trim()
+    };
+
+    document.getElementById("status").innerText = "Submitting request...";
+    const res = await fetch("/api/book", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if(data.ok){
+      document.getElementById("status").innerText =
+        "✅ Request received. You will receive a call soon to confirm booking.";
+      setTimeout(()=>{ closeModal(); location.reload(); }, 1200);
+    }else{
+      document.getElementById("status").innerText = "❌ Failed: " + (data.error || "Try again");
+    }
+  }
+
+  load();
+</script>
+</body>
+</html>
