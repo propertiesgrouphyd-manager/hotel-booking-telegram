@@ -1,138 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PGH - Properties Group Hyderabad</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Properties Group Hyderabad (PGH) • Hotel Booking</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body{
-      margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:#f5f5f5;
-      color:#111;
-    }
-
-    .container{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 18px;
-    }
-
-    /* ✅ Mobile perfect padding */
-    @media (max-width: 640px){
-      .container{ padding: 14px; }
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px;
-      background:#fff;
-      border-radius:12px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      margin-bottom:16px;
-      flex-wrap:wrap;
-    }
-
-    .brand{
-      font-size:18px;
-      font-weight:700;
-      white-space:nowrap;
-    }
-
-    .btn{
-      border:none;
-      background:#0b5ed7;
-      color:#fff;
-      padding:10px 14px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:600;
-      transition:0.2s;
-      white-space:nowrap;
-    }
-    .btn:hover{ opacity:0.92; }
-
-    .hero{
-      background:#fff;
-      border-radius:16px;
-      padding:20px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-    }
-
-    .hero h1{
-      margin:0 0 6px 0;
-      font-size:22px;
-    }
-
-    .hero p{
-      margin:0;
-      color:#444;
-      line-height:1.4;
-    }
-
-    .actions{
-      margin-top:16px;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .linkbtn{
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:11px 14px;
-      border-radius:12px;
-      background:#111;
-      color:#fff;
-      font-weight:700;
-    }
-    .linkbtn.secondary{
-      background:#f0f2f5;
-      color:#111;
-      border:1px solid #ddd;
-    }
-
-    /* ✅ Mobile: buttons full width but same style */
-    @media (max-width: 640px){
-      .actions a{ width:100%; }
-    }
+    .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
+    .shadow-soft{box-shadow:0 18px 50px rgba(0,0,0,.25)}
   </style>
 </head>
-
-<body>
-  <div class="container">
-
-    <div class="topbar">
-      <div class="brand">Properties Group Hyderabad (PGH)</div>
-      <button class="btn" onclick="goSearch()">Search Hotels</button>
-    </div>
-
-    <div class="hero">
-      <h1>PGH Hotel Booking Dashboard</h1>
-      <p>
-        Welcome to PGH — Properties Group Hyderabad. Explore hotel properties,
-        check live room availability, and view room photos in premium 3D card view.
-        Data is refreshed every 3 minutes from backend cache for ultra-fast performance.
-      </p>
-
-      <div class="actions">
-        <a class="linkbtn" href="search.html">Search Hotels</a>
-        <a class="linkbtn secondary" href="search.html">View Properties</a>
+<body class="min-h-screen bg-slate-950 text-white">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex items-center justify-between gap-4">
+      <div class="text-2xl font-bold tracking-tight leading-tight">
+        Properties Group Hyderabad (PGH)
+      </div>
+      <div class="text-sm text-slate-300 text-right">
+        Hotel Booking • Live Availability • Telegram Confirm
       </div>
     </div>
 
+    <div class="mt-10 grid lg:grid-cols-2 gap-8">
+      <div class="glass shadow-soft rounded-3xl p-5 sm:p-6">
+        <h1 class="text-3xl font-semibold leading-tight">
+          Book rooms directly from PGH Hotels
+        </h1>
+        <p class="mt-3 text-slate-300">
+          Live availability from OYO system. Booking request will be approved by hotel team via Telegram.
+        </p>
+
+        <div class="mt-8 grid gap-4">
+          <div>
+            <label class="text-sm text-slate-300">Location</label>
+            <input id="location" value="Hyderabad" class="mt-1 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm text-slate-300">Check-in</label>
+              <input id="from" type="date" class="mt-1 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+            </div>
+            <div>
+              <label class="text-sm text-slate-300">Check-out</label>
+              <input id="to" type="date" class="mt-1 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 outline-none" />
+            </div>
+          </div>
+
+          <button onclick="goSearch()" class="mt-2 w-full rounded-2xl bg-white text-slate-950 font-semibold py-3 hover:opacity-90">
+            Search Hotels
+          </button>
+
+          <div class="text-xs text-slate-400">
+            Prices shown are live “Today Price” from system snapshot.
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-3xl bg-gradient-to-br from-indigo-500/25 via-cyan-500/10 to-emerald-500/25 border border-white/10 p-5 sm:p-6">
+        <div class="text-sm text-slate-300">PGH Premium Booking</div>
+        <div class="mt-3 text-4xl font-bold leading-tight">
+          3D Room Cards<br/>Floor View<br/>Instant Updates
+        </div>
+
+        <div class="mt-6 grid gap-3 text-slate-200">
+          <div>✅ Live OYO Sync</div>
+          <div>✅ Telegram Approval</div>
+          <div>✅ Email Confirmation</div>
+          <div>✅ Ultra-fast snapshots (auto refresh)</div>
+        </div>
+
+        <div class="mt-6 text-slate-300 text-sm leading-relaxed">
+          PGH manages multiple premium properties in Hyderabad and nearby cities.
+          Book securely and get confirmation directly from hotel operations team.
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    function goSearch(){
-      window.location.href = "search.html";
-    }
-  </script>
+<script>
+  const today = new Date();
+  const tomorrow = new Date(Date.now() + 86400000);
+  document.getElementById("from").value = today.toISOString().slice(0,10);
+  document.getElementById("to").value = tomorrow.toISOString().slice(0,10);
+
+  function goSearch(){
+    const loc = encodeURIComponent(document.getElementById("location").value.trim());
+    const from = document.getElementById("from").value;
+    const to = document.getElementById("to").value;
+    window.location.href = `/search.html?location=${loc}&from=${from}&to=${to}`;
+  }
+</script>
 </body>
 </html>

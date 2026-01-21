@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-white">
+  <div class="min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-md">
+      <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+        <div class="p-6 sm:p-8">
+          <div class="flex items-center justify-between">
+            <h1 class="text-xl sm:text-2xl font-semibold tracking-tight">Admin Panel</h1>
+            <span class="text-xs px-3 py-1 rounded-full bg-white/10 border border-white/10">Secure</span>
+          </div>
+          <p class="mt-2 text-sm text-white/70">Login to manage Today Price, Standard Price, and Room Status.</p>
+
+          <form action="/admin/login" method="post" class="mt-6 space-y-4">
+            <div>
+              <label class="text-sm text-white/80">Username</label>
+              <input name="username" class="mt-2 w-full rounded-2xl bg-black/30 border border-white/10 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-white/20" placeholder="admin" required>
+            </div>
+            <div>
+              <label class="text-sm text-white/80">Password</label>
+              <input name="password" type="password" class="mt-2 w-full rounded-2xl bg-black/30 border border-white/10 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-white/20" placeholder="••••••••" required>
+            </div>
+
+            <div class="text-sm text-red-300">{{ERROR}}</div>
+
+            <button class="w-full rounded-2xl bg-white text-black font-semibold py-3 active:scale-[0.99] transition">
+              Login
+            </button>
+          </form>
+
+          <p class="mt-6 text-xs text-white/50">
+            Tip: Set <span class="font-mono">ADMIN_USERNAME</span>, <span class="font-mono">ADMIN_PASSWORD</span> in your EC2 env.
+          </p>
+        </div>
+      </div>
+      <div class="mt-6 text-center text-xs text-white/40">Production-grade, lightweight admin</div>
+    </div>
+  </div>
+</body>
+</html>

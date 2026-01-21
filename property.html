@@ -1,438 +1,220 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Property Details</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PGH • Property</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body{
-      margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:#f5f5f5;
-      color:#111;
-    }
-
-    .container{
-      max-width:1100px;
-      margin:0 auto;
-      padding:18px;
-    }
-    @media (max-width:640px){
-      .container{ padding:14px; }
-    }
-
-    .topbar{
-      background:#fff;
-      padding:16px;
-      border-radius:12px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      margin-bottom:14px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .brand{
-      font-weight:800;
-      font-size:18px;
-      word-break:break-word;
-    }
-
-    .btn{
-      border:none;
-      background:#0b5ed7;
-      color:#fff;
-      padding:10px 14px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:700;
-      white-space:nowrap;
-    }
-
-    .header{
-      background:#fff;
-      border-radius:14px;
-      padding:16px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      margin-bottom:14px;
-      min-width:0;
-    }
-
-    .meta{
-      font-size:13px;
-      color:#444;
-      margin-top:6px;
-      word-break:break-word;
-      line-height:1.35;
-    }
-
-    .pillrow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .pill{
-      background:#f0f2f5;
-      border:1px solid #e5e5e5;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-    }
-
-    .floors{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:12px;
-    }
-
-    .floorbtn{
-      border:1px solid #ddd;
-      background:#fff;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:800;
-    }
-    .floorbtn.active{
-      background:#111;
-      color:#fff;
-      border-color:#111;
-    }
-
-    .rooms{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:12px;
-    }
-
-    @media (max-width: 980px){
-      .rooms{ grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 740px){
-      .rooms{ grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px){
-      .rooms{ grid-template-columns: 1fr; }
-    }
-
-    .room{
-      background:#fff;
-      border-radius:14px;
-      padding:14px;
-      border:1px solid #eee;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      min-width:0;
-      overflow:hidden;
-    }
-
-    .room .title{
-      font-weight:900;
-      font-size:16px;
-      word-break:break-word;
-      line-height:1.2;
-    }
-
-    .room .sub{
-      margin-top:6px;
-      font-size:13px;
-      color:#555;
-      word-break:break-word;
-    }
-
-    .tag{
-      display:inline-block;
-      margin-top:10px;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      border:1px solid #eee;
-      background:#f0f2f5;
-    }
-
-    .tag.available{
-      background:#e7f7ef;
-      border-color:#bfead2;
-      color:#0b6b39;
-    }
-    .tag.booked{
-      background:#ffecec;
-      border-color:#ffcccc;
-      color:#b30000;
-    }
-
-    /* ✅ View Room button same design family */
-    .viewbtn{
-      margin-top:10px;
-      width:100%;
-      border:none;
-      background:#111;
-      color:#fff;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:900;
-    }
-
-    /* ✅ 3D Card Viewer Modal */
-    .modal{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:14px;
-      z-index:9999;
-    }
-
-    .modal.active{ display:flex; }
-
-    .modal-card{
-      width:min(950px, 100%);
-      background:#fff;
-      border-radius:18px;
-      padding:16px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.25);
-      transform: perspective(1200px) rotateX(2deg);
-    }
-
-    .modal-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-
-    .modal-title{
-      font-weight:900;
-      font-size:16px;
-      word-break:break-word;
-    }
-
-    .closebtn{
-      border:none;
-      background:#0b5ed7;
-      color:#fff;
-      padding:9px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:900;
-    }
-
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
-
-    @media(max-width: 720px){
-      .gallery{ grid-template-columns: repeat(2, 1fr); }
-    }
-    @media(max-width: 480px){
-      .gallery{ grid-template-columns: 1fr; }
-    }
-
-    .imgbox{
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid #eee;
-      background:#f5f5f5;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      transform: perspective(1000px) rotateY(-1deg);
-    }
-
-    .imgbox img{
-      width:100%;
-      height:220px;
-      object-fit:cover;
-      display:block;
-    }
-
-    .empty{
-      padding:14px;
-      font-size:13px;
-      color:#444;
-      background:#f0f2f5;
-      border:1px solid #e5e5e5;
-      border-radius:14px;
-      font-weight:800;
-    }
+    .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
+    .shadow-soft{box-shadow:0 18px 50px rgba(0,0,0,.25)}
   </style>
 </head>
-
-<body>
-  <div class="container">
-
-    <div class="topbar">
-      <div class="brand" id="propTitle">Property</div>
-      <button class="btn" onclick="goBack()">Back</button>
+<body class="min-h-screen bg-slate-950 text-white">
+  <div class="max-w-6xl mx-auto px-4 py-8 sm:py-10">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <div class="text-2xl font-bold tracking-tight leading-tight">Properties Group Hyderabad (PGH)</div>
+        <div class="mt-1 flex items-center flex-wrap gap-2">
+          <div id="propTitle" class="text-sm text-slate-300">Loading property...</div>
+          <span id="availBadge" class="hidden inline-flex items-center rounded-full bg-emerald-400/15 text-emerald-200 border border-emerald-400/20 px-3 py-1 text-xs font-semibold"></span>
+        </div>
+      </div>
+      <a href="/index.html" class="text-sm text-slate-300 hover:text-white underline underline-offset-4">Home</a>
     </div>
 
-    <div class="header">
-      <div id="propName" style="font-size:18px; font-weight:900;"></div>
-      <div class="meta" id="propAddress"></div>
+    <div id="meta" class="mt-6"></div>
 
-      <div class="pillrow">
-        <div class="pill" id="todayPrice">Today Price: ₹0</div>
-        <div class="pill" id="appArr">App ARR: ₹0</div>
-      </div>
+    <div id="floorNav" class="mt-6 flex flex-wrap gap-2"></div>
 
-      <div class="pillrow">
-        <a id="mapLink" target="_blank" style="text-decoration:none; font-weight:900;">📍 Open Map</a>
-      </div>
-    </div>
-
-    <div class="floors" id="floors"></div>
-    <div class="rooms" id="rooms"></div>
-
+    <div id="grid" class="mt-6 grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
   </div>
 
-  <!-- ✅ Room images modal -->
-  <div class="modal" id="roomModal">
-    <div class="modal-card">
-      <div class="modal-top">
-        <div class="modal-title" id="modalTitle">Room Photos</div>
-        <button class="closebtn" onclick="closeModal()">Close</button>
-      </div>
-      <div id="gallery" class="gallery"></div>
-    </div>
-  </div>
+<script>
+  const API = "/api";
 
-  <script>
-    function goBack(){ window.location.href = "search.html"; }
+  function q(name){
+    const u = new URL(window.location.href);
+    return u.searchParams.get(name) || "";
+  }
 
-    function qs(name){
-      const u = new URL(window.location.href);
-      return u.searchParams.get(name);
-    }
+  function money(n){
+    n = Number(n || 0);
+    return "₹" + Math.round(n).toLocaleString("en-IN");
+  }
 
-    let ALL_ROOMS = [];
-    let ACTIVE_FLOOR = null;
-    let PROPERTY_CODE = "";
+  function esc(s){
+    return String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
 
-    function renderFloors(floors){
-      const box = document.getElementById("floors");
-      box.innerHTML = "";
-
-      floors.forEach(f=>{
-        const btn = document.createElement("button");
-        btn.className = "floorbtn" + (f === ACTIVE_FLOOR ? " active" : "");
-        btn.textContent = "Floor " + f;
-        btn.onclick = ()=>{
-          ACTIVE_FLOOR = f;
-          renderFloors(floors);
-          renderRooms();
-        };
-        box.appendChild(btn);
-      });
-    }
-
-    function openModal(){ document.getElementById("roomModal").classList.add("active"); }
-    function closeModal(){ document.getElementById("roomModal").classList.remove("active"); }
-
-    async function viewRoom(roomNo){
-      const title = document.getElementById("modalTitle");
-      title.textContent = `Room ${roomNo} Photos`;
-
-      const g = document.getElementById("gallery");
-      g.innerHTML = "";
-
-      openModal();
-
+  // ✅ Gallery loader:
+  // expects: /rooms/<PROPERTY>/<ROOM>/manifest.json
+  // manifest.json sample:
+  // { "images": ["1.jpg","2.jpg","3.jpg"] }
+  async function loadRoomGallery(propCode, roomNo){
+    const base = `/rooms/${encodeURIComponent(propCode)}/${encodeURIComponent(roomNo)}`;
+    try{
+      const r = await fetch(`${base}/manifest.json?ts=${Date.now()}`);
+      if(!r.ok) return [];
+      const data = await r.json();
       try{
-        const res = await fetch(`/api/room-images/${encodeURIComponent(PROPERTY_CODE)}/${encodeURIComponent(roomNo)}`);
-        const data = await res.json();
-        const imgs = data.images || [];
-
-        if(!imgs.length){
-          g.innerHTML = `<div class="empty">No photos uploaded yet for this room.<br><br>
-          Upload photos to:<br><b>/home/ubuntu/hotel-booking/room_photos/${PROPERTY_CODE}/${roomNo}/</b></div>`;
-          return;
+        const avail = Number((data && (data.available_rooms ?? (data.property && data.property.available_rooms))) || 0);
+        const b = document.getElementById("availBadge");
+        if(b){
+          b.textContent = `Available Rooms: ${avail}`;
+          b.classList.remove("hidden");
         }
+      }catch(e){}
+      const imgs = (data.images || []).map(x => `${base}/${x}`);
+      return imgs;
+    }catch(e){
+      return [];
+    }
+  }
 
-        for(const src of imgs){
-          const div = document.createElement("div");
-          div.className = "imgbox";
-          div.innerHTML = `<img src="${src}" alt="Room Photo"/>`;
-          g.appendChild(div);
-        }
+  function roomCardHTML(room, propCode){
+    const isBooked = room.status === "booked";
+    const badge = isBooked
+      ? `<div class="text-xs font-semibold px-3 py-1 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-200">Booked</div>`
+      : `<div class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-200">Available</div>`;
 
-      }catch(e){
-        g.innerHTML = `<div class="empty">Failed to load room images.</div>`;
-      }
+    return `
+      <div class="glass shadow-soft rounded-3xl p-5 sm:p-6 overflow-hidden">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-lg font-bold leading-tight">Room ${esc(room.room)}</div>
+            <div class="mt-1 text-xs text-slate-400">Floor ${esc(room.floor)} • ${esc(room.type || "Standard")}</div>
+          </div>
+          ${badge}
+        </div>
+
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">Standard Price</div>
+            <div class="text-lg font-bold" id="std_${esc(room.room)}">${money(room.standard_price || 0)}</div>
+          </div>
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">Today Price</div>
+            <div class="text-lg font-bold" id="tdy_${esc(room.room)}">${money(room.today_price || 0)}</div>
+          </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <button class="rounded-2xl bg-white/10 border border-white/10 py-3 font-semibold hover:bg-white/15"
+            onclick="toggleGallery('${esc(propCode)}','${esc(room.room)}')">
+            View Room
+          </button>
+          <button ${isBooked ? "disabled" : ""} class="rounded-2xl ${isBooked ? "bg-white/5 text-white/40 border border-white/5" : "bg-white text-slate-950"} font-semibold py-3 hover:opacity-90"
+            onclick="openBooking('${esc(propCode)}','${esc(room.room)}')">
+            ${isBooked ? "Booked" : "Book Now"}
+          </button>
+        </div>
+
+        <!-- ✅ Gallery Container (inside same 3D card) -->
+        <div id="gal_${esc(room.room)}" class="hidden mt-5">
+          <div class="text-xs text-slate-400 mb-3">Room Photos</div>
+          <div id="galgrid_${esc(room.room)}" class="grid grid-cols-2 gap-3"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function toggleGallery(propCode, roomNo){
+    const wrap = document.getElementById(`gal_${roomNo}`);
+    const grid = document.getElementById(`galgrid_${roomNo}`);
+    if(!wrap || !grid) return;
+
+    if(!wrap.classList.contains("hidden")){
+      wrap.classList.add("hidden");
+      return;
     }
 
-    function renderRooms(){
-      const box = document.getElementById("rooms");
-      box.innerHTML = "";
+    // show + load
+    wrap.classList.remove("hidden");
+    grid.innerHTML = `<div class="col-span-2 text-sm text-slate-300">Loading photos...</div>`;
 
-      const list = ALL_ROOMS.filter(r => (ACTIVE_FLOOR ? r.floor === ACTIVE_FLOOR : true));
-      for(const r of list){
-        const div = document.createElement("div");
-        div.className = "room";
-
-        const statusClass = r.status === "booked" ? "booked" : "available";
-        const statusText  = r.status === "booked" ? "Booked" : "Available";
-
-        div.innerHTML = `
-          <div class="title">Room ${r.room}</div>
-          <div class="sub">Type: ${r.type || "Standard"}</div>
-          <span class="tag ${statusClass}">${statusText}</span>
-          <button class="viewbtn" onclick="viewRoom('${r.room}')">View Room</button>
-        `;
-        box.appendChild(div);
-      }
+    const imgs = await loadRoomGallery(propCode, roomNo);
+    if(!imgs.length){
+      grid.innerHTML = `
+        <div class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-4 text-sm text-slate-300">
+          No photos uploaded for this room yet.
+        </div>`;
+      return;
     }
 
-    async function loadProperty(){
-      const code = qs("code");
-      if(!code){ alert("Invalid property"); return; }
+    grid.innerHTML = imgs.map(src => `
+      <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+        <img src="${src}" class="w-full h-28 sm:h-32 object-cover" loading="lazy" />
+      </div>
+    `).join("");
+  }
 
-      PROPERTY_CODE = code;
-      document.getElementById("propTitle").textContent = code;
+  function openBooking(prop, room){
+    const from = q("from");
+    const to = q("to");
+    alert(`Booking request will be sent.\n\nProperty: ${prop}\nRoom: ${room}\nFrom: ${from}\nTo: ${to}\n\n(Booking form stays unchanged)`);
+  }
 
-      const from = new Date().toISOString().slice(0,10);
-      const toDate = new Date(Date.now()+86400000).toISOString().slice(0,10);
+  async function load(){
+    const code = q("code");
+    const from = q("from");
+    const to = q("to");
 
-      const url = `/api/property/${encodeURIComponent(code)}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(toDate)}`;
+    document.getElementById("propTitle").innerHTML = `Property: <b>${esc(code)}</b>`;
 
-      const res = await fetch(url);
-      const data = await res.json();
-
-      document.getElementById("propName").textContent = data.name || code;
-      document.getElementById("propAddress").textContent = data.address || "";
-      document.getElementById("todayPrice").textContent = "Today Price: ₹" + Math.round(data.yesterday_arr || 0);
-      document.getElementById("appArr").textContent = "App ARR: ₹" + Math.round(data.app_arr || 0);
-
-      const map = document.getElementById("mapLink");
-      map.href = data.map_link || "#";
-      map.style.pointerEvents = data.map_link ? "auto" : "none";
-      map.style.opacity = data.map_link ? "1" : "0.5";
-
-      ALL_ROOMS = data.rooms || [];
-      const floors = data.floors || [];
-
-      ACTIVE_FLOOR = floors[0] || null;
-      renderFloors(floors);
-      renderRooms();
+    let data;
+    try{
+      const r = await fetch(`${API}/property/${encodeURIComponent(code)}?from_=${from}&to=${to}`);
+      data = await r.json();
+    }catch(e){
+      document.getElementById("meta").innerHTML = `<div class="text-sm text-rose-300">❌ API not reachable.</div>`;
+      return;
     }
 
-    // close modal on background click
-    document.getElementById("roomModal").addEventListener("click", (e)=>{
-      if(e.target.id === "roomModal") closeModal();
-    });
+    document.title = `PGH • ${data.name || code}`;
+    document.getElementById("propTitle").innerHTML = `<b>${esc(data.name || code)}</b>`;
 
-    loadProperty();
-  </script>
+    document.getElementById("meta").innerHTML = `
+      <div class="glass shadow-soft rounded-3xl p-5 sm:p-6 overflow-hidden">
+        <div class="text-sm text-slate-300">Address</div>
+        <div class="mt-1 text-white break-words">${esc(data.address || "")}</div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400">Today Price</div>
+            <div class="text-xl font-bold">${money(data.yesterday_arr || 0)}</div>
+          </div>
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div class="text-xs text-slate-400"></div>
+            <div class="text-xl font-bold">${money(data.app_arr || 0)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const floors = data.floors || [];
+    const rooms = data.rooms || [];
+
+    // nav
+    const floorNav = document.getElementById("floorNav");
+    floorNav.innerHTML = "";
+    for(const f of floors){
+      const btn = document.createElement("button");
+      btn.className = "px-4 py-2 rounded-2xl bg-white/10 border border-white/10 hover:bg-white/15 text-sm font-semibold";
+      btn.textContent = `Floor ${f}`;
+      btn.onclick = () => renderRooms(String(f));
+      floorNav.appendChild(btn);
+    }
+
+    function renderRooms(floor){
+      const grid = document.getElementById("grid");
+      const list = rooms.filter(r => String(r.floor) === String(floor));
+      grid.innerHTML = list.map(r => roomCardHTML(r, code)).join("");
+    }
+
+    renderRooms(String(floors[0] || "1"));
+  }
+
+  load();
+</script>
 </body>
 </html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-white">
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/20 backdrop-blur-xl">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div>
+        <div class="text-lg font-semibold">Admin Dashboard</div>
+        <div class="text-xs text-white/60">Edit prices, room status, and manually sync OYO snapshot.</div>
+      </div>
+      <form action="/admin/logout" method="post">
+        <button class="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm hover:bg-white/10">Logout</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-10 space-y-6">
+    <!-- Sync -->
+    <section class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+      <div class="p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 class="text-base sm:text-lg font-semibold">Manual OYO Sync</h2>
+          <p class="text-sm text-white/70 mt-1">Sync only when needed. No auto-sync on deploy or restart.</p>
+        </div>
+        <button id="syncBtn" class="rounded-2xl bg-white text-black font-semibold px-5 py-3 active:scale-[0.99] transition">
+          Sync Now
+        </button>
+      </div>
+      <div class="px-5 sm:px-7 pb-6 text-sm text-white/70" id="syncStatus"></div>
+    </section>
+
+    <!-- Prices -->
+    <section class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+      <div class="p-5 sm:p-7">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base sm:text-lg font-semibold">Price Overrides</h2>
+          <button id="savePricesBtn" class="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-sm hover:bg-white/20">Save Prices</button>
+        </div>
+        <p class="text-sm text-white/70 mt-1">Only Today Price and Standard Price. App Price is removed permanently.</p>
+
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-white/70">
+              <tr class="border-b border-white/10">
+                <th class="text-left py-3 pr-4 min-w-[140px]">Property Code</th>
+                <th class="text-left py-3 pr-4 min-w-[160px]">Today Price</th>
+                <th class="text-left py-3 pr-4 min-w-[160px]">Standard Price</th>
+              </tr>
+            </thead>
+            <tbody id="pricesBody" class="align-top"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room Status -->
+    <section class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+      <div class="p-5 sm:p-7">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base sm:text-lg font-semibold">Room Booking Status</h2>
+          <button id="saveStatusBtn" class="rounded-2xl border border-white/10 bg-white/10 px-4 py-2 text-sm hover:bg-white/20">Save Status</button>
+        </div>
+        <p class="text-sm text-white/70 mt-1">Set each room as Available or Booked. Available Rooms count is auto-calculated.</p>
+
+        <div id="statusContainer" class="mt-6 space-y-6"></div>
+      </div>
+    </section>
+  </main>
+
+<script>
+let overrides = {prices:{}, room_status:{}};
+
+function tdInput(val){
+  return `<input class="w-full rounded-2xl bg-black/30 border border-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-white/20" value="${val ?? ''}" />`;
+}
+function pill(val){
+  const a = (val||"available").toLowerCase()==="available";
+  return `<button class="statusBtn rounded-full px-3 py-1 text-xs border ${a?'border-emerald-300/30 bg-emerald-400/10 text-emerald-200':'border-rose-300/30 bg-rose-400/10 text-rose-200'}" data-val="${a?'available':'booked'}">${a?'Available':'Booked'}</button>`;
+}
+
+async function loadData(){
+  const r = await fetch('/admin/api/overrides');
+  overrides = await r.json();
+
+  // Prices table
+  const body = document.getElementById('pricesBody');
+  body.innerHTML = '';
+  const codes = Object.keys(overrides.prices || {}).sort();
+  if(codes.length===0){
+    body.innerHTML = `<tr><td class="py-4 text-white/60" colspan="3">No overrides yet. Add property codes below.</td></tr>`;
+  }
+  for(const code of codes){
+    const p = overrides.prices[code] || {};
+    const tr = document.createElement('tr');
+    tr.className='border-b border-white/5';
+    tr.innerHTML = `
+      <td class="py-3 pr-4 font-mono">${code}</td>
+      <td class="py-3 pr-4">${tdInput(p.today_price)}</td>
+      <td class="py-3 pr-4">${tdInput(p.standard_price)}</td>
+    `;
+    body.appendChild(tr);
+  }
+
+  // Quick add row
+  const trAdd = document.createElement('tr');
+  trAdd.innerHTML = `
+      <td class="py-3 pr-4"><input id="newCode" class="w-full rounded-2xl bg-black/30 border border-white/10 px-4 py-3 font-mono outline-none" placeholder="Add code e.g. HYD1234"/></td>
+      <td class="py-3 pr-4">${tdInput('')}</td>
+      <td class="py-3 pr-4">${tdInput('')}</td>
+  `;
+  body.appendChild(trAdd);
+
+  // Room status
+  const container = document.getElementById('statusContainer');
+  container.innerHTML='';
+  const scodes = Object.keys(overrides.room_status || {}).sort();
+  for(const code of scodes){
+    const map = overrides.room_status[code] || {};
+    const card = document.createElement('div');
+    card.className='rounded-3xl border border-white/10 bg-black/20';
+    const rooms = Object.keys(map).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+    let roomsHtml = '';
+    for(const room of rooms){
+      roomsHtml += `
+        <div class="flex items-center justify-between gap-3 py-2 border-b border-white/5 last:border-0">
+          <div class="font-mono text-sm">${room}</div>
+          <button class="toggleRoom rounded-full px-3 py-1 text-xs border ${map[room]==='available'?'border-emerald-300/30 bg-emerald-400/10 text-emerald-200':'border-rose-300/30 bg-rose-400/10 text-rose-200'}" data-code="${code}" data-room="${room}" data-val="${map[room]}">${map[room]==='available'?'Available':'Booked'}</button>
+        </div>
+      `;
+    }
+    card.innerHTML = `
+      <div class="p-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <div class="font-semibold">${code}</div>
+          <button class="addRoomBtn rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm hover:bg-white/10" data-code="${code}">Add Room</button>
+        </div>
+        <div class="mt-4">${roomsHtml || '<div class="text-sm text-white/60">No rooms added yet.</div>'}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  }
+}
+
+document.addEventListener('click', async (e)=>{
+  if(e.target.id==='syncBtn'){
+    document.getElementById('syncStatus').textContent='Sync started...';
+    const r = await fetch('/admin/api/sync', {method:'POST'});
+    const d = await r.json();
+    document.getElementById('syncStatus').textContent = d.ok ? `Sync complete. Snapshot: ${d.snapshot_time}` : 'Sync failed';
+  }
+
+  if(e.target.classList.contains('toggleRoom')){
+    const code = e.target.dataset.code;
+    const room = e.target.dataset.room;
+    const cur = e.target.dataset.val;
+    const next = (cur==='available') ? 'booked' : 'available';
+    overrides.room_status[code][room] = next;
+    e.target.dataset.val = next;
+    e.target.textContent = next==='available' ? 'Available' : 'Booked';
+    e.target.className = `toggleRoom rounded-full px-3 py-1 text-xs border ${next==='available'?'border-emerald-300/30 bg-emerald-400/10 text-emerald-200':'border-rose-300/30 bg-rose-400/10 text-rose-200'}`;
+  }
+
+  if(e.target.id==='savePricesBtn'){
+    // gather prices table
+    const rows = Array.from(document.querySelectorAll('#pricesBody tr'));
+    const prices = {};
+    for(const row of rows){
+      const codeCell = row.querySelector('td');
+      if(!codeCell) continue;
+      const code = (codeCell.textContent || '').trim() || (row.querySelector('#newCode')?.value||'').trim();
+      if(!code) continue;
+      const inputs = row.querySelectorAll('input');
+      if(inputs.length>=2){
+        const t = inputs[0].value.trim();
+        const s = inputs[1].value.trim();
+        prices[code] = {};
+        if(t) prices[code].today_price = parseInt(t);
+        if(s) prices[code].standard_price = parseInt(s);
+      }
+    }
+    const r = await fetch('/admin/api/save-prices',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prices})});
+    const d = await r.json();
+    alert(d.ok ? 'Prices saved' : 'Save failed');
+    await loadData();
+  }
+
+  if(e.target.id==='saveStatusBtn'){
+    const r = await fetch('/admin/api/save-room-status',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({room_status: overrides.room_status})});
+    const d = await r.json();
+    alert(d.ok ? 'Room status saved' : 'Save failed');
+    await loadData();
+  }
+
+  if(e.target.classList.contains('addRoomBtn')){
+    const code = e.target.dataset.code;
+    const room = prompt('Enter room number (example: 101)');
+    if(!room) return;
+    overrides.room_status[code] = overrides.room_status[code] || {};
+    overrides.room_status[code][room] = 'available';
+    await loadData();
+  }
+});
+
+loadData();
+</script>
+</body>
+</html>
